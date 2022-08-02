@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { GameRow } from '../GameRow';
 import './GameField.scss';
 
@@ -19,7 +19,7 @@ export const GameField: React.FC = React.memo(() => {
     setPressedKey(event.key);
   };
 
-  const handleMoveDown = () => {
+  const handleMoveDown = useCallback(() => {
     const newGameData = [...gameData];
 
     for (let i = newGameData.length - 2; i >= 0; i -= 1) {
@@ -83,9 +83,9 @@ export const GameField: React.FC = React.memo(() => {
     setGameData(newGameData);
 
     setPressedKey('');
-  };
+  }, []);
 
-  const handleMoveUp = () => {
+  const handleMoveUp = useCallback(() => {
     const newGameData = [...gameData];
 
     for (let i = 1; i <= newGameData.length; i += 1) {
@@ -149,7 +149,7 @@ export const GameField: React.FC = React.memo(() => {
     setGameData(newGameData);
 
     setPressedKey('');
-  };
+  }, []);
 
   useEffect(() => {
     document.addEventListener('keydown', changePressedKey);
