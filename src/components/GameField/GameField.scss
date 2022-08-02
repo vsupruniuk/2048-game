@@ -1,0 +1,9 @@
+.game-field {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  gap: 5px;
+  background-color: #898989;
+  max-width: 500px;
+  max-height: 500px;
+}
