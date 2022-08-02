@@ -3,10 +3,10 @@ import { GameRow } from '../GameRow';
 import './GameField.scss';
 
 const defaultGameData = [
-  [2, 2, 2, 2],
-  [null, 8, null, null],
-  [null, null, 8, 8],
-  [8, null, null, null],
+  [2, null, null, 2],
+  [2, null, 2, null],
+  [null, 2, null, null],
+  [null, null, 2, null],
 ];
 
 export const GameField: React.FC = React.memo(() => {
@@ -16,18 +16,64 @@ export const GameField: React.FC = React.memo(() => {
     setPressedKey(event.key);
   };
 
-  const handleMove = () => {
+  const handleMoveDown = () => {
     const newGameData = [...gameData];
 
-    for (let i = 0; i < newGameData.length; i += 1) {
-      for (let j = newGameData[i].length - 2; j >= 0; j -= 1) {
-        if (newGameData[j + 1][i] === undefined
-        || typeof newGameData[j + 1][i] === 'number') {
-          continue;
-        }
+    for (let i = newGameData.length - 2; i >= 0; i -= 1) {
+      switch (i) {
+        case 2:
+          for (let j = 0; j <= 3; j += 1) {
+            if (newGameData[3][j] === null) {
+              [newGameData[3][j], newGameData[2][j]]
+                = [newGameData[2][j], newGameData[3][j]];
+            }
+          }
 
-        [newGameData[j][i], newGameData[j + 1][i]]
-          = [newGameData[j + 1][i], newGameData[j][i]];
+          break;
+
+        case 1:
+          for (let j = 0; j <= 3; j += 1) {
+            if (newGameData[3][j] === null) {
+              [newGameData[3][j], newGameData[1][j]]
+                = [newGameData[1][j], newGameData[3][j]];
+            }
+          }
+
+          for (let j = 0; j <= 3; j += 1) {
+            if (newGameData[2][j] === null) {
+              [newGameData[2][j], newGameData[1][j]]
+                = [newGameData[1][j], newGameData[2][j]];
+            }
+          }
+
+          break;
+
+        case 0:
+          for (let j = 0; j <= 3; j += 1) {
+            if (newGameData[3][j] === null) {
+              [newGameData[3][j], newGameData[0][j]]
+                = [newGameData[0][j], newGameData[3][j]];
+            }
+          }
+
+          for (let j = 0; j <= 3; j += 1) {
+            if (newGameData[2][j] === null) {
+              [newGameData[2][j], newGameData[0][j]]
+                = [newGameData[0][j], newGameData[2][j]];
+            }
+          }
+
+          for (let j = 0; j <= 3; j += 1) {
+            if (newGameData[1][j] === null) {
+              [newGameData[1][j], newGameData[0][j]]
+                = [newGameData[0][j], newGameData[1][j]];
+            }
+          }
+
+          break;
+
+        default:
+          break;
       }
     }
 
@@ -41,7 +87,7 @@ export const GameField: React.FC = React.memo(() => {
 
     switch (pressedKey) {
       case 'ArrowDown':
-        handleMove();
+        handleMoveDown();
         break;
 
       default:
