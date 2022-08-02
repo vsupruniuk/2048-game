@@ -15,9 +15,9 @@ export const GameField: React.FC = React.memo(() => {
     setGameData,
   ] = useState<(number | null)[][]>(defaultGameData);
   const [pressedKey, setPressedKey] = useState('');
-  const changePressedKey = (event: KeyboardEvent) => {
+  const changePressedKey = useCallback((event: KeyboardEvent) => {
     setPressedKey(event.key);
-  };
+  }, []);
 
   const handleMoveDown = useCallback(() => {
     const newGameData = [...gameData];
@@ -151,6 +151,62 @@ export const GameField: React.FC = React.memo(() => {
     setPressedKey('');
   }, []);
 
+  const handleMoveRight = useCallback(() => {
+    const newGameData = [...gameData];
+
+    for (let i = 0; i < newGameData.length; i += 1) {
+      for (let j = newGameData[i].length - 2; j >= 0; j -= 1) {
+        switch (j) {
+          case 2:
+            if (newGameData[i][3] === null) {
+              [newGameData[i][3], newGameData[i][j]]
+                = [newGameData[i][j], newGameData[i][3]];
+            }
+
+            break;
+
+          case 1:
+            if (newGameData[i][3] === null) {
+              [newGameData[i][3], newGameData[i][j]]
+                = [newGameData[i][j], newGameData[i][3]];
+            }
+
+            if (newGameData[i][2] === null) {
+              [newGameData[i][2], newGameData[i][j]]
+                = [newGameData[i][j], newGameData[i][2]];
+            }
+
+            break;
+
+          case 0:
+            if (newGameData[i][3] === null) {
+              [newGameData[i][3], newGameData[i][j]]
+                = [newGameData[i][j], newGameData[i][3]];
+            }
+
+            if (newGameData[i][2] === null) {
+              [newGameData[i][2], newGameData[i][j]]
+                = [newGameData[i][j], newGameData[i][2]];
+            }
+
+            if (newGameData[i][1] === null) {
+              [newGameData[i][1], newGameData[i][j]]
+                = [newGameData[i][j], newGameData[i][1]];
+            }
+
+            break;
+
+          default:
+            break;
+        }
+      }
+    }
+
+    setGameData(newGameData);
+
+    setPressedKey('');
+  }, []);
+
   useEffect(() => {
     document.addEventListener('keydown', changePressedKey);
 
@@ -161,6 +217,10 @@ export const GameField: React.FC = React.memo(() => {
 
       case 'ArrowUp':
         handleMoveUp();
+        break;
+
+      case 'ArrowRight':
+        handleMoveRight();
         break;
 
       default:
