@@ -3,10 +3,10 @@ import { GameRow } from '../GameRow';
 import './GameField.scss';
 
 const defaultGameData = [
+  [2, 0, 2, 2],
+  [2, 0, 2, 0],
+  [2, 2, 0, 0],
   [2, 0, 0, 2],
-  [0, 0, 2, 0],
-  [2, 2, 2, 0],
-  [4, 0, 2, 0],
 ];
 
 export const GameField: React.FC = React.memo(() => {
@@ -110,11 +110,14 @@ export const GameField: React.FC = React.memo(() => {
   const handleMoveUp = useCallback(() => {
     const newGameData = [...gameData];
 
-    for (let i = 1; i <= newGameData.length; i += 1) {
+    for (let i = 0; i <= newGameData.length; i += 1) {
       switch (i) {
         case 1:
           for (let j = 0; j <= 3; j += 1) {
-            if (newGameData[0][j] === null) {
+            if (newGameData[0][j] === newGameData[1][j]) {
+              newGameData[0][j] *= 2;
+              newGameData[1][j] = 0;
+            } else if (newGameData[0][j] === 0) {
               [newGameData[0][j], newGameData[1][j]]
                 = [newGameData[1][j], newGameData[0][j]];
             }
@@ -124,14 +127,21 @@ export const GameField: React.FC = React.memo(() => {
 
         case 2:
           for (let j = 0; j <= 3; j += 1) {
-            if (newGameData[0][j] === null) {
+            if (newGameData[0][j] === newGameData[2][j]
+              && newGameData[1][j] === 0) {
+              newGameData[0][j] *= 2;
+              newGameData[2][j] = 0;
+            } else if (newGameData[0][j] === 0) {
               [newGameData[0][j], newGameData[2][j]]
                 = [newGameData[2][j], newGameData[0][j]];
             }
           }
 
           for (let j = 0; j <= 3; j += 1) {
-            if (newGameData[1][j] === null) {
+            if (newGameData[1][j] === newGameData[2][j]) {
+              newGameData[1][j] *= 2;
+              newGameData[2][j] = 0;
+            } else if (newGameData[1][j] === 0) {
               [newGameData[1][j], newGameData[2][j]]
                 = [newGameData[2][j], newGameData[1][j]];
             }
@@ -141,21 +151,33 @@ export const GameField: React.FC = React.memo(() => {
 
         case 3:
           for (let j = 0; j <= 3; j += 1) {
-            if (newGameData[0][j] === null) {
+            if (newGameData[3][j] === newGameData[0][j]
+              && newGameData[1][j] === 0
+              && newGameData[2][j] === 0) {
+              newGameData[0][j] *= 2;
+              newGameData[3][j] = 0;
+            } else if (newGameData[0][j] === 0) {
               [newGameData[0][j], newGameData[3][j]]
                 = [newGameData[3][j], newGameData[0][j]];
             }
           }
 
           for (let j = 0; j <= 3; j += 1) {
-            if (newGameData[1][j] === null) {
+            if (newGameData[1][j] === newGameData[3][j]
+              && newGameData[2][j] === 0) {
+              newGameData[1][j] *= 2;
+              newGameData[3][j] = 0;
+            } else if (newGameData[1][j] === 0) {
               [newGameData[1][j], newGameData[3][j]]
                 = [newGameData[3][j], newGameData[1][j]];
             }
           }
 
           for (let j = 0; j <= 3; j += 1) {
-            if (newGameData[2][j] === null) {
+            if (newGameData[2][j] === newGameData[3][j]) {
+              newGameData[2][j] *= 2;
+              newGameData[3][j] = 0;
+            } else if (newGameData[3][j] === 0) {
               [newGameData[2][j], newGameData[3][j]]
                 = [newGameData[3][j], newGameData[2][j]];
             }
