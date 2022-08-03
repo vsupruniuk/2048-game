@@ -3,17 +3,17 @@ import { GameRow } from '../GameRow';
 import './GameField.scss';
 
 const defaultGameData = [
-  [2, null, null, 2],
-  [2, null, 2, null],
-  [null, 2, null, null],
-  [null, null, 2, null],
+  [2, 0, 0, 2],
+  [0, 0, 2, 0],
+  [2, 2, 2, 0],
+  [4, 0, 2, 0],
 ];
 
 export const GameField: React.FC = React.memo(() => {
   const [
     gameData,
     setGameData,
-  ] = useState<(number | null)[][]>(defaultGameData);
+  ] = useState<number[][]>(defaultGameData);
   const [pressedKey, setPressedKey] = useState('');
   const changePressedKey = useCallback((event: KeyboardEvent) => {
     setPressedKey(event.key);
@@ -26,7 +26,10 @@ export const GameField: React.FC = React.memo(() => {
       switch (i) {
         case 2:
           for (let j = 0; j <= 3; j += 1) {
-            if (newGameData[3][j] === null) {
+            if (newGameData[2][j] === newGameData[3][j]) {
+              newGameData[3][j] *= 2;
+              newGameData[2][j] = 0;
+            } else if (newGameData[3][j] === 0) {
               [newGameData[3][j], newGameData[2][j]]
                 = [newGameData[2][j], newGameData[3][j]];
             }
@@ -36,14 +39,21 @@ export const GameField: React.FC = React.memo(() => {
 
         case 1:
           for (let j = 0; j <= 3; j += 1) {
-            if (newGameData[3][j] === null) {
+            if (newGameData[1][j] === newGameData[3][j]
+              && newGameData[2][j] === 0) {
+              newGameData[3][j] *= 2;
+              newGameData[1][j] = 0;
+            } else if (newGameData[3][j] === 0) {
               [newGameData[3][j], newGameData[1][j]]
                 = [newGameData[1][j], newGameData[3][j]];
             }
           }
 
           for (let j = 0; j <= 3; j += 1) {
-            if (newGameData[2][j] === null) {
+            if (newGameData[1][j] === newGameData[2][j]) {
+              newGameData[2][j] *= 2;
+              newGameData[1][j] = 0;
+            } else if (newGameData[2][j] === 0) {
               [newGameData[2][j], newGameData[1][j]]
                 = [newGameData[1][j], newGameData[2][j]];
             }
@@ -53,21 +63,33 @@ export const GameField: React.FC = React.memo(() => {
 
         case 0:
           for (let j = 0; j <= 3; j += 1) {
-            if (newGameData[3][j] === null) {
+            if (newGameData[0][j] === newGameData[3][j]
+              && newGameData[1][j] === 0
+              && newGameData[2][j] === 0) {
+              newGameData[3][j] *= 2;
+              newGameData[0][j] = 0;
+            } else if (newGameData[3][j] === 0) {
               [newGameData[3][j], newGameData[0][j]]
                 = [newGameData[0][j], newGameData[3][j]];
             }
           }
 
           for (let j = 0; j <= 3; j += 1) {
-            if (newGameData[2][j] === null) {
+            if (newGameData[0][j] === newGameData[2][j]
+              && newGameData[1][j] === 0) {
+              newGameData[2][j] *= 2;
+              newGameData[0][j] = 0;
+            } else if (newGameData[2][j] === 0) {
               [newGameData[2][j], newGameData[0][j]]
                 = [newGameData[0][j], newGameData[2][j]];
             }
           }
 
           for (let j = 0; j <= 3; j += 1) {
-            if (newGameData[1][j] === null) {
+            if (newGameData[0][j] === newGameData[1][j]) {
+              newGameData[1][j] *= 2;
+              newGameData[0][j] = 0;
+            } else if (newGameData[1][j] === 0) {
               [newGameData[1][j], newGameData[0][j]]
                 = [newGameData[0][j], newGameData[1][j]];
             }
