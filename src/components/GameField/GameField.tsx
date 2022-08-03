@@ -202,40 +202,62 @@ export const GameField: React.FC = React.memo(() => {
       for (let j = newGameData[i].length - 2; j >= 0; j -= 1) {
         switch (j) {
           case 2:
-            if (newGameData[i][3] === null) {
-              [newGameData[i][3], newGameData[i][j]]
-                = [newGameData[i][j], newGameData[i][3]];
+            if (newGameData[i][3] === newGameData[i][2]) {
+              newGameData[i][3] *= 2;
+              newGameData[i][2] = 0;
+            } else if (newGameData[i][3] === 0) {
+              [newGameData[i][3], newGameData[i][2]]
+                = [newGameData[i][2], newGameData[i][3]];
             }
 
             break;
 
           case 1:
-            if (newGameData[i][3] === null) {
-              [newGameData[i][3], newGameData[i][j]]
-                = [newGameData[i][j], newGameData[i][3]];
+            if (newGameData[i][3] === newGameData[i][1]
+              && newGameData[i][2] === 0) {
+              newGameData[i][3] *= 2;
+              newGameData[i][1] = 0;
+            } else if (newGameData[i][3] === 0) {
+              [newGameData[i][3], newGameData[i][1]]
+                = [newGameData[i][1], newGameData[i][3]];
             }
 
-            if (newGameData[i][2] === null) {
-              [newGameData[i][2], newGameData[i][j]]
-                = [newGameData[i][j], newGameData[i][2]];
+            if (newGameData[i][2] === newGameData[i][1]) {
+              newGameData[i][2] *= 2;
+              newGameData[i][1] = 0;
+            } else if (newGameData[i][2] === 0) {
+              [newGameData[i][2], newGameData[i][1]]
+                = [newGameData[i][1], newGameData[i][2]];
             }
 
             break;
 
           case 0:
-            if (newGameData[i][3] === null) {
-              [newGameData[i][3], newGameData[i][j]]
-                = [newGameData[i][j], newGameData[i][3]];
+            if (newGameData[i][3] === newGameData[i][0]
+              && newGameData[i][2] === 0
+              && newGameData[i][1] === 0) {
+              newGameData[i][3] *= 2;
+              newGameData[i][0] = 0;
+            } else if (newGameData[i][3] === 0) {
+              [newGameData[i][3], newGameData[i][0]]
+                = [newGameData[i][0], newGameData[i][3]];
             }
 
-            if (newGameData[i][2] === null) {
-              [newGameData[i][2], newGameData[i][j]]
-                = [newGameData[i][j], newGameData[i][2]];
+            if (newGameData[i][2] === newGameData[i][0]
+              && newGameData[i][1] === 0) {
+              newGameData[i][2] *= 2;
+              newGameData[i][0] = 0;
+            } else if (newGameData[i][2] === 0) {
+              [newGameData[i][2], newGameData[i][0]]
+                = [newGameData[i][0], newGameData[i][2]];
             }
 
-            if (newGameData[i][1] === null) {
-              [newGameData[i][1], newGameData[i][j]]
-                = [newGameData[i][j], newGameData[i][1]];
+            if (newGameData[i][1] === newGameData[i][0]) {
+              newGameData[i][1] *= 2;
+              newGameData[i][0] = 0;
+            } else if (newGameData[i][1] === 0) {
+              [newGameData[i][1], newGameData[i][0]]
+                = [newGameData[i][0], newGameData[i][1]];
             }
 
             break;
