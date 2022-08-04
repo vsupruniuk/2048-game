@@ -1,6 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { GameRow } from '../GameRow';
 import './GameField.scss';
+import {
+  getRandomIndex,
+  getRandomValue,
+  selectRandomLine,
+} from '../../utils/random.helpers';
 
 const defaultGameData = [
   [0, 0, 0, 0],
@@ -15,6 +20,10 @@ export const GameField: React.FC = React.memo(() => {
     setGameData,
   ] = useState<number[][]>(defaultGameData);
   const [pressedKey, setPressedKey] = useState('');
+
+  const changePressedKey = useCallback((event: KeyboardEvent) => {
+    setPressedKey(event.key);
+  }, []);
 
   const handleMoveDown = useCallback(() => {
     const newGameData = [...gameData];
@@ -98,6 +107,22 @@ export const GameField: React.FC = React.memo(() => {
           break;
       }
     }
+
+    let randomLine = selectRandomLine() > 0.4 ? 0 : 1;
+
+    if (newGameData[1].every(cell => cell !== 0)) {
+      randomLine = 0;
+    }
+
+    let randomCellIndex = [randomLine, getRandomIndex()];
+
+    if (newGameData[randomCellIndex[0]][randomCellIndex[1]] !== 0) {
+      while (newGameData[randomCellIndex[0]][randomCellIndex[1]] !== 0) {
+        randomCellIndex = [0, getRandomIndex()];
+      }
+    }
+
+    newGameData[randomCellIndex[0]][randomCellIndex[1]] = getRandomValue();
 
     setGameData(newGameData);
 
@@ -347,20 +372,6 @@ export const GameField: React.FC = React.memo(() => {
 
     setPressedKey('');
   }, []);
-
-  const changePressedKey = useCallback((event: KeyboardEvent) => {
-    setPressedKey(event.key);
-  }, []);
-
-  const getRandomIndex = () => {
-    return Math.floor(Math.random() * 4);
-  };
-
-  const getRandomValue = () => {
-    const randomNumber = Math.ceil(Math.random() * 10);
-
-    return randomNumber === 10 ? 4 : 2;
-  };
 
   useEffect(() => {
     const initialGameData = [...gameData];

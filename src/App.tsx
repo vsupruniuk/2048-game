@@ -1,7 +1,7 @@
 import './App.scss';
 import React, { useState } from 'react';
 import { GameField } from './components/GameField';
-import { StartScreen } from './components/StartScreen/StartScreen';
+import { StartScreen } from './components/StartScreen';
 
 const App: React.FC = () => {
   const [isGameStarted, setIsGameStarted] = useState(false);
