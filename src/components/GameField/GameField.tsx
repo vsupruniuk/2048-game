@@ -3,10 +3,10 @@ import { GameRow } from '../GameRow';
 import './GameField.scss';
 
 const defaultGameData = [
-  [2, 0, 2, 2],
-  [2, 0, 2, 0],
-  [0, 2, 0, 2],
-  [2, 0, 0, 2],
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
 ];
 
 export const GameField: React.FC = React.memo(() => {
@@ -15,10 +15,6 @@ export const GameField: React.FC = React.memo(() => {
     setGameData,
   ] = useState<number[][]>(defaultGameData);
   const [pressedKey, setPressedKey] = useState('');
-
-  const changePressedKey = useCallback((event: KeyboardEvent) => {
-    setPressedKey(event.key);
-  }, []);
 
   const handleMoveDown = useCallback(() => {
     const newGameData = [...gameData];
@@ -350,6 +346,40 @@ export const GameField: React.FC = React.memo(() => {
     setGameData(newGameData);
 
     setPressedKey('');
+  }, []);
+
+  const changePressedKey = useCallback((event: KeyboardEvent) => {
+    setPressedKey(event.key);
+  }, []);
+
+  const getRandomIndex = () => {
+    return Math.floor(Math.random() * 4);
+  };
+
+  const getRandomValue = () => {
+    const randomNumber = Math.ceil(Math.random() * 10);
+
+    return randomNumber === 10 ? 4 : 2;
+  };
+
+  useEffect(() => {
+    const initialGameData = [...gameData];
+    const firstRandomCell = [getRandomIndex(), getRandomIndex()];
+    let secondRandomCell = [getRandomIndex(), getRandomIndex()];
+
+    if (firstRandomCell[0] === secondRandomCell[0]
+      && firstRandomCell[1] === secondRandomCell[1]) {
+      while (firstRandomCell[0] === secondRandomCell[0]
+      && firstRandomCell[1] === secondRandomCell[1]) {
+        secondRandomCell = [getRandomIndex(), getRandomIndex()];
+      }
+    }
+
+    initialGameData[firstRandomCell[0]][firstRandomCell[1]] = getRandomValue();
+    initialGameData[secondRandomCell[0]][secondRandomCell[1]]
+      = getRandomValue();
+
+    setGameData(initialGameData);
   }, []);
 
   useEffect(() => {
