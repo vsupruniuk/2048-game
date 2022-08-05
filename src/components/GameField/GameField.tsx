@@ -118,7 +118,7 @@ export const GameField: React.FC = React.memo(() => {
 
     if (newGameData[randomCellIndex[0]][randomCellIndex[1]] !== 0) {
       while (newGameData[randomCellIndex[0]][randomCellIndex[1]] !== 0) {
-        randomCellIndex = [0, getRandomIndex()];
+        randomCellIndex = [randomLine, getRandomIndex()];
       }
     }
 
@@ -199,7 +199,7 @@ export const GameField: React.FC = React.memo(() => {
             if (newGameData[2][j] === newGameData[3][j]) {
               newGameData[2][j] *= 2;
               newGameData[3][j] = 0;
-            } else if (newGameData[3][j] === 0) {
+            } else if (newGameData[2][j] === 0) {
               [newGameData[2][j], newGameData[3][j]]
                 = [newGameData[3][j], newGameData[2][j]];
             }
@@ -211,6 +211,22 @@ export const GameField: React.FC = React.memo(() => {
           break;
       }
     }
+
+    let randomLine = selectRandomLine() > 0.4 ? 3 : 2;
+
+    if (newGameData[2].every(cell => cell !== 0)) {
+      randomLine = 0;
+    }
+
+    let randomCellIndex = [randomLine, getRandomIndex()];
+
+    if (newGameData[randomCellIndex[0]][randomCellIndex[1]] !== 0) {
+      while (newGameData[randomCellIndex[0]][randomCellIndex[1]] !== 0) {
+        randomCellIndex = [randomLine, getRandomIndex()];
+      }
+    }
+
+    newGameData[randomCellIndex[0]][randomCellIndex[1]] = getRandomValue();
 
     setGameData(newGameData);
 
@@ -290,6 +306,22 @@ export const GameField: React.FC = React.memo(() => {
       }
     }
 
+    let randomColumn = selectRandomLine() > 0.4 ? 0 : 1;
+
+    if (newGameData.every(line => line[1] !== 0)) {
+      randomColumn = 0;
+    }
+
+    let randomCellIndex = [getRandomIndex(), randomColumn];
+
+    if (newGameData[randomCellIndex[0]][randomCellIndex[1]] !== 0) {
+      while (newGameData[randomCellIndex[0]][randomCellIndex[1]] !== 0) {
+        randomCellIndex = [getRandomIndex(), randomColumn];
+      }
+    }
+
+    newGameData[randomCellIndex[0]][randomCellIndex[1]] = getRandomValue();
+
     setGameData(newGameData);
 
     setPressedKey('');
@@ -367,6 +399,22 @@ export const GameField: React.FC = React.memo(() => {
         }
       }
     }
+
+    let randomColumn = selectRandomLine() > 0.4 ? 3 : 2;
+
+    if (newGameData.every(line => line[2] !== 0)) {
+      randomColumn = 0;
+    }
+
+    let randomCellIndex = [getRandomIndex(), randomColumn];
+
+    if (newGameData[randomCellIndex[0]][randomCellIndex[1]] !== 0) {
+      while (newGameData[randomCellIndex[0]][randomCellIndex[1]] !== 0) {
+        randomCellIndex = [getRandomIndex(), randomColumn];
+      }
+    }
+
+    newGameData[randomCellIndex[0]][randomCellIndex[1]] = getRandomValue();
 
     setGameData(newGameData);
 
