@@ -1,0 +1,15 @@
+@import "./utils/variables";
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 18px;
+}
+
+body {
+  margin: 0;
+  background-color: $color-main-background;
+}

@@ -724,12 +724,17 @@ export const GameField: React.FC = React.memo(() => {
       default:
         break;
     }
+
+    return () => {
+      document.removeEventListener('keydown', changePressedKey);
+    };
   }, [pressedKey]);
 
   return (
     <div className="game-field">
-      <div>
-        <span>{`Score ${score}`}</span>
+      <div className="game-field__score">
+        <span>Score</span>
+        <span>{score}</span>
       </div>
       {/* eslint-disable-next-line no-nested-ternary */}
       {isGameWon ? (
@@ -737,15 +742,17 @@ export const GameField: React.FC = React.memo(() => {
           Congratulation!!! You WIN!!!
         </h1>
       ) : (isGameLose ? (
-        <h1>You lose :(</h1>
+        <h1 className="game-field__game-over-title">You lose :(</h1>
       ) : (
-        gameData.map((row, index) => (
-          <GameRow
-            // eslint-disable-next-line react/no-array-index-key
-            key={index}
-            gameDataRow={row}
-          />
-        ))
+        <div className="game-field__game-board">
+          {gameData.map((row, index) => (
+            <GameRow
+              // eslint-disable-next-line react/no-array-index-key
+              key={index}
+              gameDataRow={row}
+            />
+          ))}
+        </div>
       ))}
     </div>
   );
