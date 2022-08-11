@@ -1,0 +1,52 @@
+@import "../../utils/variables";
+
+.start-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 500px;
+
+  &__title {
+    margin-top: 0;
+    margin-bottom: 30px;
+
+    font-size: 80px;
+    font-weight: bold;
+    color: $color-main-text;
+  }
+
+  &__description {
+    margin-bottom: 60px;
+    line-height: 1.2;
+    color: $color-main-text;
+  }
+
+  &__button {
+    margin-bottom: 135px;
+    height: 45px;
+    width: 180px;
+
+    border-radius: 3px;
+    border-color: transparent;
+    cursor: pointer;
+
+    font-family: inherit;
+    font-size: inherit;
+    text-align: center;
+    line-height: 40px;
+
+    background-color: $color-button-background;
+    color: $color-secondary-text;
+
+    transition: box-shadow 0.2s, transform 0.2s;
+
+    &:hover {
+      box-shadow: 0 0 25px rgba(143, 122, 102, 0.30), 0 0 43px rgba(143, 122, 102, 0.24);
+      transform: scale(0.98);
+    }
+  }
+
+  &__instruction {
+    color: $color-main-text;
+  }
+}

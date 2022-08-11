@@ -1,11 +1,20 @@
 import './App.scss';
-import React from 'react';
+import React, { useState } from 'react';
 import { GameField } from './components/GameField';
+import { StartScreen } from './components/StartScreen';
 
 const App: React.FC = () => {
+  const [isGameStarted, setIsGameStarted] = useState(false);
+
   return (
     <div className="App">
-      <GameField />
+      {isGameStarted ? (
+        <GameField />
+      ) : (
+        <StartScreen
+          startGame={() => setIsGameStarted(true)}
+        />
+      )}
     </div>
   );
 };

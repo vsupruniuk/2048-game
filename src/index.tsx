@@ -1,9 +1,8 @@
 import ReactDOM from 'react-dom';
-
 import App from './App';
+import './main.scss';
 
-const Root = () => (
-  <App />
+ReactDOM.render(
+  <App />,
+  document.getElementById('root'),
 );
-
-ReactDOM.render(<Root />, document.getElementById('root'));

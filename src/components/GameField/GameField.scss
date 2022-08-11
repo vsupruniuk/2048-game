@@ -1,0 +1,34 @@
+@import "../../utils/variables";
+
+.game-field {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+
+  &__winning-title,
+  &__game-over-title,
+  &__score {
+    display: flex;
+    flex-direction: column;
+    background: $color-game-field-background;
+    padding: 10px 20px;
+    height: max-content;
+    width: max-content;
+    font-weight: bold;
+    border-radius: 3px;
+    color: $color-secondary-text;
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  &__game-board {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    gap: 15px;
+    border-radius: 6px;
+    width: 500px;
+    height: 500px;
+    background-color: $color-game-field-background;
+  }
+}
