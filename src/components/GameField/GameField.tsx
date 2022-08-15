@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import classNames from 'classnames';
 import { GameRow } from '../GameRow';
 import './GameField.scss';
+import { useLocalStorage } from '../../hooks/useLoaclStorage';
 import {
   getRandomIndex,
   getRandomValue,
@@ -23,6 +25,7 @@ export const GameField: React.FC = React.memo(() => {
   const [isGameWon, setIsGameWon] = useState(false);
   const [isGameLose, setIsGameLose] = useState(false);
   const [score, setScore] = useState(0);
+  const [bestScore, setBestScore] = useLocalStorage('best score', 0);
 
   const changePressedKey = useCallback((event: KeyboardEvent) => {
     setPressedKey(event.key);
@@ -589,6 +592,12 @@ export const GameField: React.FC = React.memo(() => {
   }, [gameData]);
 
   useEffect(() => {
+    if (score >= bestScore) {
+      setBestScore(score);
+    }
+  }, [score]);
+
+  useEffect(() => {
     if (gameData.some(row => row.includes(2048))) {
       setIsGameWon(true);
     }
@@ -600,14 +609,18 @@ export const GameField: React.FC = React.memo(() => {
         if (i === 0) {
           if (j === 0) {
             if (gameData[i][j] === gameData[i + 1][j]
-            || gameData[i][j] === gameData[i][j + 1]) {
+            || gameData[i][j] === gameData[i][j + 1]
+            || gameData[i + 1][j] === 0
+            || gameData[i][j + 1] === 0) {
               isMovesLeft = true;
             }
           }
 
           if (j === 3) {
             if (gameData[i][j] === gameData[i + 1][j]
-              || gameData[i][j] === gameData[i][j - 1]) {
+              || gameData[i][j] === gameData[i][j - 1]
+              || gameData[i + 1][j] === 0
+              || gameData[i][j - 1] === 0) {
               isMovesLeft = true;
             }
           }
@@ -615,7 +628,10 @@ export const GameField: React.FC = React.memo(() => {
           if (j > 0 && j < 3) {
             if (gameData[i][j] === gameData[i + 1][j]
               || gameData[i][j] === gameData[i][j - 1]
-              || gameData[i][j] === gameData[i][j + 1]) {
+              || gameData[i][j] === gameData[i][j + 1]
+              || gameData[i + 1][j] === 0
+              || gameData[i][j + 1] === 0
+              || gameData[i][j - 1] === 0) {
               isMovesLeft = true;
             }
           }
@@ -624,14 +640,18 @@ export const GameField: React.FC = React.memo(() => {
         if (i === 3) {
           if (j === 0) {
             if (gameData[i][j] === gameData[i - 1][j]
-              || gameData[i][j] === gameData[i][j + 1]) {
+              || gameData[i][j] === gameData[i][j + 1]
+              || gameData[i - 1][j] === 0
+              || gameData[i][j + 1] === 0) {
               isMovesLeft = true;
             }
           }
 
           if (j === 3) {
             if (gameData[i][j] === gameData[i - 1][j]
-              || gameData[i][j] === gameData[i][j - 1]) {
+              || gameData[i][j] === gameData[i][j - 1]
+              || gameData[i - 1][j] === 0
+              || gameData[i][j - 1] === 0) {
               isMovesLeft = true;
             }
           }
@@ -639,7 +659,10 @@ export const GameField: React.FC = React.memo(() => {
           if (j > 0 && j < 3) {
             if (gameData[i][j] === gameData[i - 1][j]
               || gameData[i][j] === gameData[i][j - 1]
-              || gameData[i][j] === gameData[i][j + 1]) {
+              || gameData[i][j] === gameData[i][j + 1]
+              || gameData[i - 1][j] === 0
+              || gameData[i][j - 1] === 0
+              || gameData[i][j + 1] === 0) {
               isMovesLeft = true;
             }
           }
@@ -649,7 +672,10 @@ export const GameField: React.FC = React.memo(() => {
           if (j === 0) {
             if (gameData[i][j] === gameData[i - 1][j]
               || gameData[i][j] === gameData[i + 1][j]
-              || gameData[i][j] === gameData[i][j + 1]) {
+              || gameData[i][j] === gameData[i][j + 1]
+              || gameData[i - 1][j] === 0
+              || gameData[i + 1][j] === 0
+              || gameData[i][j + 1] === 0) {
               isMovesLeft = true;
             }
           }
@@ -657,7 +683,10 @@ export const GameField: React.FC = React.memo(() => {
           if (j === 3) {
             if (gameData[i][j] === gameData[i - 1][j]
               || gameData[i][j] === gameData[i + 1][j]
-              || gameData[i][j] === gameData[i][j - 1]) {
+              || gameData[i][j] === gameData[i][j - 1]
+              || gameData[i - 1][j] === 0
+              || gameData[i + 1][j] === 0
+              || gameData[i][j - 1] === 0) {
               isMovesLeft = true;
             }
           }
@@ -666,7 +695,11 @@ export const GameField: React.FC = React.memo(() => {
             if (gameData[i][j] === gameData[i - 1][j]
               || gameData[i][j] === gameData[i + 1][j]
               || gameData[i][j] === gameData[i][j - 1]
-              || gameData[i][j] === gameData[i][j + 1]) {
+              || gameData[i][j] === gameData[i][j + 1]
+              || gameData[i - 1][j] === 0
+              || gameData[i + 1][j] === 0
+              || gameData[i][j - 1] === 0
+              || gameData[i][j + 1] === 0) {
               isMovesLeft = true;
             }
           }
@@ -678,6 +711,7 @@ export const GameField: React.FC = React.memo(() => {
       setIsGameLose(false);
     } else {
       setIsGameLose(true);
+      document.removeEventListener('keydown', changePressedKey);
     }
   }, [gameData]);
 
@@ -724,36 +758,46 @@ export const GameField: React.FC = React.memo(() => {
       default:
         break;
     }
-
-    return () => {
-      document.removeEventListener('keydown', changePressedKey);
-    };
   }, [pressedKey]);
 
   return (
     <div className="game-field">
-      <div className="game-field__score">
-        <span>Score</span>
-        <span>{score}</span>
-      </div>
-      {/* eslint-disable-next-line no-nested-ternary */}
-      {isGameWon ? (
-        <h1 className="game-field__winning-title">
-          Congratulation!!! You WIN!!!
-        </h1>
-      ) : (isGameLose ? (
-        <h1 className="game-field__game-over-title">You lose :(</h1>
-      ) : (
-        <div className="game-field__game-board">
-          {gameData.map((row, index) => (
-            <GameRow
-              // eslint-disable-next-line react/no-array-index-key
-              key={index}
-              gameDataRow={row}
-            />
-          ))}
+      <div className="game-field__score-container">
+        <div className="game-field__score">
+          <span>Score</span>
+          <span>{score}</span>
         </div>
-      ))}
+
+        <div className="game-field__best-score">
+          <span>Best score</span>
+          <span>{bestScore}</span>
+        </div>
+      </div>
+
+      <div className="game-field__game-board">
+        {gameData.map((row, index) => (
+          <GameRow
+            // eslint-disable-next-line react/no-array-index-key
+            key={index}
+            gameDataRow={row}
+          />
+        ))}
+      </div>
+      <h1 className={classNames(
+        'game-field__winning-title',
+        { 'game-field__winning-title--active': isGameWon },
+      )}
+      >
+        Congratulation!!! You WIN!!!
+      </h1>
+
+      <h1 className={classNames(
+        'game-field__game-over-title',
+        { 'game-field__game-over-title--active': isGameLose },
+      )}
+      >
+        You lose :(
+      </h1>
     </div>
   );
 });
